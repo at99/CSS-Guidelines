@@ -53,8 +53,15 @@ CSS 是一种[领域语言](http://book.51cto.com/art/201007/209600.htm)（DSL�
   * [CSS 预处理器](#css-)
 *  [值得围观的示例]()
   *  [过度约束]()
-  *  [滥用后代选择符](#滥用后代选择符)
+  *  [滥用后代选择符](#)
   *  [链式（交集）选择符]()
+  *  复合语法
+  *  不必要的命名空间
+  *  不必要的重复
+  *  精简规则
+  *  良好的代码格式
+
+
 <a name="CSS_document_analysis"></a>
 ## CSS 文档分析
 
@@ -524,13 +531,34 @@ Class 的优势在于复用性，而且私有度也并不高。私有度非常�
     // 好的
     .menu-left-icon {..}
 
+### 复合语法
+尽可能使用复合语法。
+
+    // 糟糕
+    .someclass {
+     padding-top: 20px;
+     padding-bottom: 20px;
+     padding-left: 10px;
+     padding-right: 10px;
+     background: #000;
+     background-image: url(../imgs/carrot.png);
+     background-position: bottom;
+     background-repeat: repeat-x;
+    }
+    
+    // 好的
+    .someclass {
+     padding: 20px 10px 20px 10px;
+     background: #000 url(../imgs/carrot.png) repeat-x bottom;
+    }
+
 ### 不必要的命名空间
     // 糟糕
     .someclass table tr.otherclass td.somerule {..}
     
     //好的
     .someclass .otherclass .somerule {..}
-### 避免不必要的重复
+### 不必要的重复
 
     // 糟糕
     .someclass {
@@ -552,8 +580,71 @@ Class 的优势在于复用性，而且私有度也并不高。私有度非常�
      font-size: 15px;
     }
 
+### 尽可能精简规则
+在上面规则的基础上，可以进一步合并不同类里的重复的规则。
 
-2014/1/24 16:00:30 
+    // 糟糕
+    .someclass {
+     color: red;
+     background: blue;
+     height: 150px;
+     width: 150px;
+     font-size: 16px;
+    }
+    
+    .otherclass {
+     color: red;
+     background: blue;
+     height: 150px;
+     width: 150px;
+     font-size: 8px;
+    }
+    
+    // 好的
+    .someclass, .otherclass {
+     color: red;
+     background: blue;
+     height: 150px;
+     width: 150px;
+    }
+    
+    .someclass {
+     font-size: 16px;
+    }
+    
+    .otherclass {
+     font-size: 8px;
+    }
+
+### 良好的代码格式
+代码的易读性和易维护性成正比。下面是我们建议的格式化方法。
+
+    // 糟糕
+    .someclass-a, .someclass-b, .someclass-c, .someclass-d {
+     ...
+    }
+    
+    // 好的
+    .someclass-a, 
+    .someclass-b, 
+    .someclass-c, 
+    .someclass-d {
+     ...
+    }
+    
+    // 好的做法
+    .someclass {
+    background-image:
+    linear-gradient(#000, #ccc),
+    linear-gradient(#ccc, #ddd);
+    box-shadow:
+    2px 2px 2px #000,
+    1px 4px 1px 1px #ddd inset;
+    }
+
+显然，这些只是极少数的示例，是我们在日常中积累的规则。如果你想阅读更多的知识，建议阅读MDN上的编写[高效的CSS](https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Writing_efficient_CSS)和谷歌指南上的[优化浏览器渲染](https://developers.google.com/speed/docs/best-practices/rendering#UseEfficientCSSSelectors)。
+
+
 
 
 
