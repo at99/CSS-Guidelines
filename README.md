@@ -41,15 +41,20 @@ CSS 是一种[领域语言](http://book.51cto.com/art/201007/209600.htm)（DSL�
     * [字号](#)
   * [简写](#)
   * [ID](#id)
-  * [选择器](#)
-    * [过修饰选择器](#)
-    * [选择器性能](#)
+* [选择器](#)
+  * [过修饰选择器](#)
+  * [选择器性能](#)
   * [使用 CSS 选择器的目的](#)
   * [`!important`](#important)
+*  [使用技巧]()
   * [凑数与绝对定位](#)
   * [条件判断](#)
   * [Debugging](#debugging)
   * [CSS 预处理器](#css-)
+*  [值得围观的示例]()
+  *  [过度约束]()
+  *  [滥用后代选择符](#滥用后代选择符)
+  *  [链式（交集）选择符]()
 <a name="CSS_document_analysis"></a>
 ## CSS 文档分析
 
@@ -489,16 +494,66 @@ Class 的优势在于复用性，而且私有度也并不高。私有度非常�
         a{}
     }
 
+## 值得围观的示例
+
+### 过度约束
+作为一般规则，不添加不必要的约束。
+
+    // 糟糕
+    ul#someid {..}
+    .menu#otherid{..}
+    
+    // 好的
+    #someid {..}
+    #otherid {..}
+
+<a name="滥用后代选择符"></a>
+### 滥用后代选择符
+不仅性能低下而且代码很脆弱，html代码和css代码严重耦合，html代码结构发生变化时，CSS也得修改，这是多么糟糕，特别是在大公司里，写html和css的往往不是同一个人。
+    
+    // 坑爹呢
+    html div tr td {..}
 
 
+### 链式（交集）选择符
+这和过度约束的情况类似，更明智的做法是简单的创建一个新的CSS类选择符。
+
+    // 糟糕
+    .menu.left.icon {..}
+    
+    // 好的
+    .menu-left-icon {..}
+
+### 不必要的命名空间
+    // 糟糕
+    .someclass table tr.otherclass td.somerule {..}
+    
+    //好的
+    .someclass .otherclass .somerule {..}
+### 避免不必要的重复
+
+    // 糟糕
+    .someclass {
+     color: red;
+     background: blue;
+     font-size: 15px;
+    }
+    
+    .otherclass {
+     color: red;
+     background: blue;
+     font-size: 15px;
+    }
+    
+    // 好的
+    .someclass, .otherclass {
+     color: red;
+     background: blue;
+     font-size: 15px;
+    }
 
 
-
-
-
-
-
-
+2014/1/24 16:00:30 
 
 
 
